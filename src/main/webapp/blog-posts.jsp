@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reports Dashboard</title>
+<title>Create Blog Post</title>
 
 <style>
 
@@ -52,7 +52,7 @@ body{
     transition:0.3s;
 }
 
-/* Lighter Hover Effect */
+/* Hover Effect */
 .navbar a:hover{
     background:#8a8a8a;
 }
@@ -60,45 +60,48 @@ body{
 /* Main Container */
 .container{
     width:95%;
-    margin:25px auto;
+    margin:20px auto;
     background:white;
-    padding:25px;
+    padding:20px;
     border-radius:5px;
     box-shadow:0px 0px 5px rgba(0,0,0,0.2);
 }
 
 .container h2{
-    color:#333;
     margin-bottom:20px;
+    color:#333;
 }
 
-/* Form Section */
-.report-box{
-    margin-top:15px;
-}
-
-/* Label */
+/* Form Labels */
 label{
-    font-size:18px;
+    display:block;
+    margin-bottom:8px;
+    margin-top:15px;
     font-weight:bold;
-    color:#444;
+    color:#333;
 }
 
-/* Dropdown */
-select{
+/* Input Fields */
+input[type="text"],
+textarea{
     width:100%;
     padding:12px;
-    margin-top:10px;
-    margin-bottom:20px;
     border:1px solid #ccc;
     border-radius:4px;
-    font-size:16px;
+    font-size:15px;
+}
+
+/* Textarea */
+textarea{
+    resize:vertical;
+    min-height:100px;
 }
 
 /* Button */
 .btn{
     width:100%;
     padding:12px;
+    margin-top:15px;
     background:#2f2f2f;
     color:white;
     border:none;
@@ -108,7 +111,7 @@ select{
     transition:0.3s;
 }
 
-/* Lighter Hover */
+/* Hover Effect */
 .btn:hover{
     background:#707070;
 }
@@ -130,38 +133,37 @@ select{
 
 <!-- Header -->
 <div class="header">
-    Admin Blog Dashboard
+    Blog Dashboard
 </div>
 
 <!-- Navigation -->
 <div class="navbar">
-    <a href="#">Manage Posts</a>
-    <a href="#">Manage Users</a>
-    <a href="#">Post Moderation</a>
-    <a href="#">Reports</a>
+    <a href="#">Home</a>
+    <a href="#">Create New Post</a>
+    <a href="#">Profile</a>
 </div>
 
 <!-- Main Content -->
 <div class="container">
 
-    <h2>Reports</h2>
+    <h2>Create New Post</h2>
 
-    <div class="report-box">
+    <form action="#" method="post">
 
-        <label>Select Report:</label>
+        <label>Title:</label>
+        <input type="text" name="title">
 
-        <select>
-            <option>Most Active Users</option>
-            <option>Most Popular Posts</option>
-            <option>Monthly Traffic</option>
-            <option>Reported Posts</option>
-        </select>
+        <label>Content:</label>
+        <textarea name="content"></textarea>
 
-        <button class="btn">
-            Generate Report
+        <label>Tags:</label>
+        <input type="text" name="tags" placeholder="Comma separated tags">
+
+        <button type="submit" class="btn">
+            Publish
         </button>
 
-    </div>
+    </form>
 
 </div>
 

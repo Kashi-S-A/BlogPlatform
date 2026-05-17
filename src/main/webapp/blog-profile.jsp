@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reports Dashboard</title>
+<title>User Profile</title>
 
 <style>
 
@@ -52,7 +52,7 @@ body{
     transition:0.3s;
 }
 
-/* Lighter Hover Effect */
+/* Hover Effect */
 .navbar a:hover{
     background:#8a8a8a;
 }
@@ -60,56 +60,75 @@ body{
 /* Main Container */
 .container{
     width:95%;
-    margin:25px auto;
+    margin:20px auto;
     background:white;
-    padding:25px;
+    padding:20px;
     border-radius:5px;
     box-shadow:0px 0px 5px rgba(0,0,0,0.2);
 }
 
 .container h2{
+    margin-bottom:15px;
     color:#333;
-    margin-bottom:20px;
 }
 
-/* Form Section */
-.report-box{
+.profile-info{
+    margin-bottom:25px;
+}
+
+.profile-info p{
+    margin-bottom:8px;
+    font-size:18px;
+    color:#333;
+}
+
+/* Post Card */
+.post-card{
+    background:#dcdcdc;
+    padding:15px;
+    border-radius:4px;
     margin-top:15px;
 }
 
-/* Label */
-label{
-    font-size:18px;
-    font-weight:bold;
-    color:#444;
+.post-card h3{
+    margin-bottom:15px;
+    color:#222;
 }
 
-/* Dropdown */
-select{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    margin-bottom:20px;
-    border:1px solid #ccc;
-    border-radius:4px;
-    font-size:16px;
-}
-
-/* Button */
+/* Buttons */
 .btn{
+    display:block;
     width:100%;
     padding:12px;
-    background:#2f2f2f;
+    margin:8px 0;
+    text-align:center;
+    text-decoration:none;
+    background:#7a7a7a;
     color:white;
-    border:none;
     border-radius:4px;
-    font-size:16px;
-    cursor:pointer;
     transition:0.3s;
 }
 
-/* Lighter Hover */
+/* Hover Effect */
 .btn:hover{
+    background:#9a9a9a;
+}
+
+/* Logout Button */
+.logout-btn{
+    display:block;
+    width:100%;
+    padding:12px;
+    margin-top:20px;
+    text-align:center;
+    text-decoration:none;
+    background:#2f2f2f;
+    color:white;
+    border-radius:4px;
+    transition:0.3s;
+}
+
+.logout-btn:hover{
     background:#707070;
 }
 
@@ -130,38 +149,42 @@ select{
 
 <!-- Header -->
 <div class="header">
-    Admin Blog Dashboard
+    Blog Dashboard
 </div>
 
 <!-- Navigation -->
 <div class="navbar">
-    <a href="#">Manage Posts</a>
-    <a href="#">Manage Users</a>
-    <a href="#">Post Moderation</a>
-    <a href="#">Reports</a>
+    <a href="#">Home</a>
+    <a href="#">Create New Post</a>
+    <a href="#">Profile</a>
 </div>
 
 <!-- Main Content -->
 <div class="container">
 
-    <h2>Reports</h2>
+    <h2>User Profile</h2>
 
-    <div class="report-box">
+    <!-- Profile Information -->
+    <div class="profile-info">
+        <p>Name: John Doe</p>
+        <p>Email: johndoe@example.com</p>
+    </div>
 
-        <label>Select Report:</label>
+    <!-- User Posts -->
+    <h2>Your Posts</h2>
 
-        <select>
-            <option>Most Active Users</option>
-            <option>Most Popular Posts</option>
-            <option>Monthly Traffic</option>
-            <option>Reported Posts</option>
-        </select>
+    <div class="post-card">
 
-        <button class="btn">
-            Generate Report
-        </button>
+        <h3>Your Blog Title 1</h3>
+
+        <a href="#" class="btn">Edit</a>
+
+        <a href="#" class="btn">Delete</a>
 
     </div>
+
+    <!-- Logout -->
+    <a href="#" class="logout-btn">Logout</a>
 
 </div>
 
