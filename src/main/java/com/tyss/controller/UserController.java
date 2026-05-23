@@ -1,9 +1,13 @@
 package com.tyss.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tyss.entity.Blog;
+import com.tyss.entity.User;
 import com.tyss.repo.BlogRepository;
+import com.tyss.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final BlogRepository blogRepository;
+	
+	private final UserRepository userRepository;
 
 	@GetMapping("/dashboard")
 	public String dashboardPage() {
@@ -60,7 +68,13 @@ public class UserController {
 	}
 
 	@GetMapping("/profile")
-	public String profilePage() {
+	public String profilePage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+		User user = userRepository.findByEmail(userDetails.getUsername()).get();
+		List<Blog> userBlogs = user.getBlogs();
+
+		model.addAttribute("profileUser", user);
+		model.addAttribute("profileBlogs", userBlogs);
+
 		return "blog-profile";
 	}
 
