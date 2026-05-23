@@ -138,9 +138,9 @@ textarea{
 
 <!-- Navigation -->
 <div class="navbar">
-    <a href="#">Home</a>
-    <a href="#">Create New Post</a>
-    <a href="#">Profile</a>
+     	<a href="/user/home">Home</a>
+        <a href="/user/blog-post">Create New Post</a>
+        <a href="/user/profile">Profile</a>
 </div>
 
 <!-- Main Content -->

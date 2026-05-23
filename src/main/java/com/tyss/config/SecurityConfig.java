@@ -20,15 +20,17 @@ public class SecurityConfig {
 		http.csrf(c -> c.disable())
 			.authorizeHttpRequests(req -> 
 					req.requestMatchers("/auth/**").permitAll()
-					   .requestMatchers("/user/**").hasRole(Role.USER.toString())
-					   .requestMatchers("/admin/**").hasRole(Role.ADMIN.toString())
+					   .requestMatchers("/user/**").hasRole(Role.USER.name())
+					   .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
 					   .anyRequest()
-					   .authenticated()
+//					   .authenticated()
+					   .permitAll()
 			)
 			.formLogin(l -> l.loginPage("/auth/login")//GET
-							 .loginProcessingUrl("/login")//POST
-							 .successForwardUrl("/dashboard")
-							 .failureUrl("/login")
+							 .loginProcessingUrl("/auth/login")//POST
+							 .defaultSuccessUrl("/user/dashboard")
+							 .failureUrl("/auth/login?error=invalid credentials")
+							 .permitAll()
 			)
 			.logout(l -> l.logoutUrl("/logout"));
 		

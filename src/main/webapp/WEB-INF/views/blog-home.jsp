@@ -1,3 +1,6 @@
+<%@page import="java.util.List"%>
+<%@page import="com.tyss.entity.Blog"%>
+<%@page import="org.springframework.data.domain.Page"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -82,6 +85,24 @@ body{
     font-size:15px;
 }
 
+/* Sort Button */
+.search-box button{
+    width:100%;
+    padding:12px;
+    background:#2f2f2f;
+    color:white;
+    border:none;
+    border-radius:4px;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+/* Hover Effect */
+.search-box button:hover{
+    background:#707070;
+}
+
 /* Sort Dropdown */
 .sort-box select{
     width:100%;
@@ -90,6 +111,24 @@ body{
     border-radius:4px;
     margin-bottom:20px;
     font-size:15px;
+}
+
+/* Sort Button */
+.sort-box button{
+    width:100%;
+    padding:12px;
+    background:#2f2f2f;
+    color:white;
+    border:none;
+    border-radius:4px;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+/* Hover Effect */
+.sort-box button:hover{
+    background:#707070;
 }
 
 /* Blog Card */
@@ -162,9 +201,9 @@ body{
 
 <!-- Navigation -->
 <div class="navbar">
-    <a href="#">Home</a>
-    <a href="#">Create New Post</a>
-    <a href="#">Profile</a>
+     <a href="/user/home">Home</a>
+     <a href="/user/blog-post">Create New Post</a>
+     <a href="/user/profile">Profile</a>
 </div>
 
 <!-- Main Content -->
@@ -173,42 +212,74 @@ body{
     <h2>Blog Posts</h2>
 
     <!-- Search Box -->
+    
+    <form action="/user/search">
     <div class="search-box">
-        <input type="text" placeholder="Search posts...">
+        <input type="text" name="s" placeholder="Search posts...">
     </div>
-
+    <button type="submit">Search</button>
+	</form>
+	
     <!-- Sort Dropdown -->
+    <form action="/user/home">
     <div class="sort-box">
-        <select>
-            <option>Sort by Date</option>
-            <option>Sort by Popularity</option>
-            <option>Sort by Author</option>
+        <select name="by">
+            <option value="createdDate">Sort by Date</option>
+            <option value="userId">Sort by Author</option>
         </select>
+        <button type="submit">Sort</button>
     </div>
+    
+    </form>
+    <%
+    	Page<Blog> pg =(Page<Blog>) request.getAttribute("page");
+        String by = (String)request.getAttribute("by");
+    	Blog blog = pg.getContent().get(0);
+    	if(blog!=null)
+    	{
+    %>
 
     <!-- Blog Post Card -->
     <div class="blog-card">
+    
 
-        <h3>Blog Title 1</h3>
+        <h3><%=blog.getTitle()%></h3>
 
         <p>
-            Author: John Doe | Date: 2024-08-09
+            Author: <%=blog.getUser().getFullName()%> | Date: <%=blog.getCreatedDate()%>
         </p>
 
         <p>
-            Excerpt: This is an example excerpt from a blog post...
+            Excerpt: <%=blog.getContent()%>
         </p>
-
-        <a href="#" class="read-more">Read More</a>
+		<% }else{ %>
+		<p>No blog Available</p>
+		<%} %>
+        <!-- <a href="#" class="read-more">Read More</a> -->
 
     </div>
 
     <!-- Pagination -->
     <div class="pagination">
-        <a href="#">« Prev</a>
-        <a href="#">Next »</a>
+        <%
+        	if(!pg.isFirst())
+        	{
+        %>
+         <a href="/user/home?pageNumber=<%=pg.getNumber()-1%>&by=<%=by%>">« Prev</a>
+         <%
+        	}
+         %>
+         
+         <%
+        	if(!pg.isLast())
+        	{
+        %>
+        <a href="/user/home?pageNumber=<%= pg.getNumber() + 1%>&by=<%=by%>">Next »</a>
+        <%
+        	}
+        %>
     </div>
-
+	
 </div>
 
 <!-- Footer -->

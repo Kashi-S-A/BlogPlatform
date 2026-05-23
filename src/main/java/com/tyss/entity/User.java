@@ -27,16 +27,20 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String name;
+
+	@Column(unique = true)
+	private String username;
+
+	private String fullName;
 
 	@Column(unique = true)
 	private String email;
 
-	@Column(length = 8)
+//	@Column(length = 5)
 	private String password;
 
 	@Enumerated(EnumType.STRING)
-	private Role role;
+	private Role role = Role.USER;
 
 	@OneToMany(mappedBy = "user")
 	private List<Blog> blogs;

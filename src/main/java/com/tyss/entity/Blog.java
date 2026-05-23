@@ -29,6 +29,8 @@ public class Blog {
 	private String content;
 
 	private String tags;
+	
+	private String author;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")

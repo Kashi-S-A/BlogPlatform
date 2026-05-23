@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration Page</title>
+    <title>Login Page</title>
 
     <style>
         * {
@@ -19,10 +19,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            background: linear-gradient(135deg, #36d1dc, #5b86e5);
         }
 
-        .register-container {
+        .login-container {
             background: #fff;
             padding: 40px;
             width: 350px;
@@ -30,7 +30,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .register-container h2 {
+        .login-container h2 {
             text-align: center;
             margin-bottom: 25px;
             color: #333;
@@ -58,39 +58,39 @@
         }
 
         .input-group input:focus {
-            border-color: #4facfe;
-            box-shadow: 0 0 5px rgba(79, 172, 254, 0.5);
+            border-color: #5b86e5;
+            box-shadow: 0 0 5px rgba(91, 134, 229, 0.5);
         }
 
-        .register-btn {
+        .login-btn {
             width: 100%;
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background: #4facfe;
+            background: #5b86e5;
             color: white;
             font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
         }
 
-        .register-btn:hover {
-            background: #2196f3;
+        .login-btn:hover {
+            background: #3f6fd9;
         }
 
-        .login-link {
+        .register-link {
             text-align: center;
             margin-top: 15px;
             font-size: 14px;
         }
 
-        .login-link a {
+        .register-link a {
             text-decoration: none;
-            color: #4facfe;
+            color: #5b86e5;
             font-weight: bold;
         }
 
-        .login-link a:hover {
+        .register-link a:hover {
             text-decoration: underline;
         }
     </style>
@@ -98,45 +98,36 @@
 
 <body>
 
-    <div class="register-container">
-        <h2>Create Account</h2>
-
-        <form>
-            <!-- Username Field -->
-            <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Enter username" required />
-            </div>
-
+    <div class="login-container">
+        <h2>Login</h2>
+        
+        <h4 style="color: red">${err}</h4>
+        <h4 style="color: green">${succ}</h4>
+		<br>
+        <form action="/auth/login" method="post">
             <!-- Email Field -->
             <div class="input-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter email" required />
+                <input type="email" name="username" id="email" placeholder="Enter your email" required />
             </div>
 
             <!-- Password Field -->
             <div class="input-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter password" required />
+                <input type="password" name="password" id="password" placeholder="Enter your password" required />
             </div>
 
-            <!-- FullName Field -->
-            <div class="input-group">
-                <label for="FullName">FullName</label>
-                <input type="text" id="fullname" placeholder="Enter FullName" required />
-            </div>
-
-            <!-- Register Button -->
-            <button type="submit" class="register-btn">
-                Register
+            <!-- Login Button -->
+            <button type="submit" class="login-btn">
+                Login
             </button>
 
-            <!-- Login Link -->
-            <div class="login-link">
-                Already have an account?
-                <a href="login.html">Login</a>
-            </div>
         </form>
+         <!-- Registration Link -->
+            <div class="register-link">
+                Don't have an account?
+                <a href="/auth/register">Register</a>
+            </div>
     </div>
 
 </body>
