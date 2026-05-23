@@ -1,9 +1,12 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -18,12 +21,10 @@
     font-family: Arial, sans-serif;
 }
 
-/* Body */
 body{
     background:#f4f4f4;
 }
 
-/* Header */
 .header{
     background:#2f2f2f;
     color:white;
@@ -33,7 +34,6 @@ body{
     font-weight:bold;
 }
 
-/* Navigation */
 .navbar{
     background:#2f2f2f;
     padding:15px;
@@ -52,12 +52,10 @@ body{
     transition:0.3s;
 }
 
-/* Lighter Hover Effect */
 .navbar a:hover{
     background:#8a8a8a;
 }
 
-/* Main Container */
 .container{
     width:95%;
     margin:25px auto;
@@ -72,19 +70,16 @@ body{
     margin-bottom:20px;
 }
 
-/* Form Section */
 .report-box{
     margin-top:15px;
 }
 
-/* Label */
 label{
     font-size:18px;
     font-weight:bold;
     color:#444;
 }
 
-/* Dropdown */
 select{
     width:100%;
     padding:12px;
@@ -95,8 +90,7 @@ select{
     font-size:16px;
 }
 
-/* Button */
-.btn{
+.btn1,.download{
     width:100%;
     padding:12px;
     background:#2f2f2f;
@@ -108,18 +102,35 @@ select{
     transition:0.3s;
 }
 
-/* Lighter Hover */
-.btn:hover{
+.btn1:hover,.download:hover{
     background:#707070;
 }
 
-/* Footer */
 .footer{
     background:#2f2f2f;
     color:white;
     text-align:center;
     padding:20px;
     margin-top:25px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+table th{
+    background:#2f2f2f;
+    color:white;
+    padding:12px;
+    text-align:center;
+}
+
+table td{
+    padding:12px;
+    border:1px solid #ccc;
+    text-align:center;
 }
 
 </style>
@@ -138,7 +149,7 @@ select{
     <a href="#">Manage Posts</a>
     <a href="#">Manage Users</a>
     <a href="#">Post Moderation</a>
-    <a href="#">Reports</a>
+    <a href="/admin/report">Reports</a>
 </div>
 
 <!-- Main Content -->
@@ -152,14 +163,41 @@ select{
 
         <select>
             <option>Most Active Users</option>
-            <option>Most Popular Posts</option>
-            <option>Monthly Traffic</option>
-            <option>Reported Posts</option>
         </select>
 
-        <button class="btn">
-            Generate Report
+        <button class="btn1" onclick="generateReport()">
+            Show Report
         </button>
+
+    </div>
+
+    <br><br>
+
+    <!-- Hidden Table -->
+    <div id="reportTable" style="display:none;">
+
+        <table>
+
+            <tr>
+                <th>User Name</th>
+                <th>No Of Blogs</th>
+            </tr>
+
+            <c:forEach items="${reports}" var="report">
+
+                <tr>
+                    <td>${report[0]}</td>
+                    <td>${report[1]}</td>
+                </tr>
+
+            </c:forEach>
+
+		  <button class="download" onclick="downloadReport()">
+            Download Report
+        </button>
+
+		
+        </table>
 
     </div>
 
@@ -169,6 +207,27 @@ select{
 <div class="footer">
     © 2024 Blog Platform
 </div>
+
+<script>
+
+	function generateReport() {
+
+		// show table
+		document.getElementById("reportTable").style.display = "block";
+
+		// download pdf
+	}
+	
+	function downloadReport() {
+
+		// show table
+		document.getElementById("reportTable").style.display = "block";
+
+		// download pdf
+		window.location.href='/admin/download-report';
+	}
+
+</script>
 
 </body>
 </html>

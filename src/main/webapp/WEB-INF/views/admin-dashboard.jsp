@@ -137,7 +137,7 @@
 	    <a href="#">Manage Posts</a>
 	    <a href="#">Manage Users</a>
 	    <a href="#">Post Moderation</a>
-	    <a href="#">Reports</a>
+	    <a href="/admin/report">Reports</a>
 	</div>
 
 	<!-- Main Content -->
