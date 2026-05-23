@@ -125,6 +125,11 @@ textarea{
     margin-top:25px;
 }
 
+.success-msg{
+    color: green;
+    text-align: center;
+    margin-bottom: 15px;
+}
 </style>
 
 </head>
@@ -145,7 +150,7 @@ textarea{
 
 <!-- Main Content -->
 <div class="container">
-
+	<h3 class="success-msg">${blogAdded}</h3>
     <h2>Create New Post</h2>
 
     <form action="#" method="post">

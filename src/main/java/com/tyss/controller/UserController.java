@@ -1,5 +1,8 @@
 package com.tyss.controller;
 
+import java.security.Principal;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -7,11 +10,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.tyss.dto.BlogPostDTO;
 import com.tyss.entity.Blog;
+import com.tyss.entity.User;
 import com.tyss.repo.BlogRepository;
+import com.tyss.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final BlogRepository blogRepository;
+	
+	private final UserRepository userRepository;
 
 	@GetMapping("/dashboard")
 	public String dashboardPage() {
@@ -65,7 +74,26 @@ public class UserController {
 	}
 
 	@GetMapping("/blog-post")
-	public String blogPostPage() {
+	public String blogPostPage(Model model,@RequestParam(required=false) String msg) {
+		
+		model.addAttribute("blogpost", new BlogPostDTO());
+		model.addAttribute("msg", msg);
+		
+		return "blog-posts";
+	}
+	
+	@PostMapping("/blog-post")
+	public String blogPost(Model model, BlogPostDTO blogpostDto, Principal principal) {
+		Optional<User>opt=userRepository.findByEmail(principal.getName());
+		User user=opt.get();
+		Blog blog=new Blog();
+		blog.setUser(user);
+		blog.setTitle(blogpostDto.getTitle());
+		blog.setContent(blogpostDto.getContent());
+		blog.setTags(blogpostDto.getTags());
+		blog.setAuthor(user.getFullName());
+		blogRepository.save(blog);
+		model.addAttribute("blogAdded", "blog added Successfully");
 		return "blog-posts";
 	}
 }
