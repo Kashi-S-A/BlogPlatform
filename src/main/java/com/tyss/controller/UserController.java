@@ -1,16 +1,14 @@
 package com.tyss.controller;
 
 import java.security.Principal;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,7 +62,7 @@ public class UserController {
 			pageable = PageRequest.of(pageNumber, 1, Sort.by(by).ascending());
 		}
 
-		Page<Blog> page = blogRepository.findAll(pageable);
+		Page<Blog> page = blogRepository.findByStatus("APPROVED",pageable);
 
 		model.addAttribute("page", page);
 		model.addAttribute("by", by);
@@ -73,9 +71,11 @@ public class UserController {
 	}
 
 	@GetMapping("/profile")
-	public String profilePage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-		User user = userRepository.findByEmail(userDetails.getUsername()).get();
-		List<Blog> userBlogs = user.getBlogs();
+	public String profilePage(Model model, Principal principal) {
+		
+		User user = userRepository.findByEmail(principal.getName()).get();
+		
+		List<Blog> userBlogs = blogRepository.findByStatusAndUserId("APPROVED", user.getId());
 
 		model.addAttribute("profileUser", user);
 		model.addAttribute("profileBlogs", userBlogs);

@@ -271,9 +271,9 @@
 
         <div class="nav-menu">
             <a href="#">Manage Posts</a>
-            <a href="#">Manage Users</a>
+            <a href="/admin/users">Manage Users</a>
             <a href="/admin/post-module" class="active">Post Moderation</a>
-            <a href="#">Reports</a>
+            <a href="/admin/report">Reports</a>
         </div>
     </div>
 

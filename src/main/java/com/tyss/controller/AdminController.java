@@ -1,5 +1,7 @@
 package com.tyss.controller;
+
 import java.io.ByteArrayOutputStream;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,30 +30,29 @@ import com.tyss.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
 
-	private final UserRepository userRepository ;
-	
+	private final UserRepository userRepository;
+
 	private final BlogRepository blogRepository;
 
-	
 	@GetMapping("/dashboard")
 	public String dashoardPage() {
-		
+
 		return "admin-dashboard";
 	}
-	
-	
-	
+
 	// manage users page by hritik
 	@GetMapping("/users")
-	public String manageUsers(Model model) {
+	public String manageUsers(Model model,Principal principal) {
 
+		User user = userRepository.findByEmail(principal.getName()).get();
+		
 		List<User> users = userRepository.findAll();
+		users.remove(user);
 
 		model.addAttribute("users", users);
 
@@ -66,7 +67,7 @@ public class AdminController {
 
 		return "redirect:/admin/users";
 	}
-	
+
 	// registration and login
 
 	@GetMapping("/report")
@@ -142,8 +143,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/blog/approve")
-	public String approveBlog(@RequestParam("id") Integer id, @RequestParam(defaultValue = "0") Integer page,
-			Model model) {
+	public String approveBlog(@RequestParam Integer id, @RequestParam(defaultValue = "0") Integer page, Model model) {
 
 		Optional<Blog> optionalBlog = blogRepository.findById(id);
 
@@ -172,8 +172,8 @@ public class AdminController {
 	}
 
 	@PostMapping("/blog/reject")
-	public String rejectBlog(@RequestParam("id") Integer id, @RequestParam(defaultValue = "0") Integer page,
-			@RequestParam(value = "adminNote", required = false) String adminNote, Model model) {
+	public String rejectBlog(@RequestParam Integer id, @RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(required = false) String adminNote, Model model) {
 
 		Optional<Blog> optionalBlog = blogRepository.findById(id);
 
@@ -229,6 +229,11 @@ public class AdminController {
 		model.addAttribute("successMsg", "Blog removed successfully.");
 
 		return "post-mod";
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+		return "login";
 	}
 
 }

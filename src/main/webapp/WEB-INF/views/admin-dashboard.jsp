@@ -135,8 +135,8 @@
 	<!-- Navigation -->
 	<div class="navbar">
 	    <a href="#">Manage Posts</a>
-	    <a href="#">Manage Users</a>
-	    <a href="#">Post Moderation</a>
+	    <a href="/admin/users">Manage Users</a>
+	    <a href="/admin/post-module">Post Moderation</a>
 	    <a href="/admin/report">Reports</a>
 	</div>
 

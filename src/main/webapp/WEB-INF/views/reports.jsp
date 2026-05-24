@@ -56,6 +56,24 @@ body{
     background:#8a8a8a;
 }
 
+/* Logout Button */
+.logout-btn{
+    display:block;
+    width:100%;
+    padding:12px;
+    margin-top:20px;
+    text-align:center;
+    text-decoration:none;
+    background:#2f2f2f;
+    color:white;
+    border-radius:4px;
+    transition:0.3s;
+}
+
+.logout-btn:hover{
+    background:#707070;
+}
+
 .container{
     width:95%;
     margin:25px auto;
@@ -147,8 +165,8 @@ table td{
 <!-- Navigation -->
 <div class="navbar">
     <a href="#">Manage Posts</a>
-    <a href="#">Manage Users</a>
-    <a href="#">Post Moderation</a>
+    <a href="/admin/users">Manage Users</a>
+    <a href="/admin/post-module">Post Moderation</a>
     <a href="/admin/report">Reports</a>
 </div>
 
@@ -200,6 +218,8 @@ table td{
         </table>
 
     </div>
+    <!-- Logout -->
+    <a href="logout" class="logout-btn">Logout</a>
 
 </div>
 

@@ -14,6 +14,10 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
 	Page<Blog> findByTitleContainingIgnoreCaseOrTagsContainingIgnoreCaseOrAuthorContainingIgnoreCase(String title,
 			String tags, String author, Pageable pageable);
 
+	List<Blog> findByStatusAndUserId(String status, Integer id);
+
+	Page<Blog> findByStatus(String status, Pageable pageable);
+
 	@Query("""
 			SELECT b.user.username , COUNT(b)
 			FROM Blog b
