@@ -1,30 +1,64 @@
 package com.tyss.controller;
-
 import java.io.ByteArrayOutputStream;
-import org.springframework.http.HttpHeaders;
 import java.util.List;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.tyss.entity.User;
 import com.tyss.repo.BlogRepository;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import com.tyss.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+
 
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
 
+	private final UserRepository userRepository ;
+	
 	private final BlogRepository blogRepository;
+	
+	@GetMapping("/dashboard")
+	public String dashoardPage() {
+		
+		return "admin-dashboard";
+	}
+	
+	
+	
+	// manage users page by hritik
+	@GetMapping("/users")
+	public String manageUsers(Model model) {
+
+		List<User> users = userRepository.findAll();
+
+		model.addAttribute("users", users);
+
+		return "users";
+	}
+
+	// delete user
+	@GetMapping("/delete-user/{id}")
+	public String deleteUser(@PathVariable Integer id) {
+
+		userRepository.deleteById(id);
+
+		return "redirect:/admin/users";
+	}
+	
 	// registration and login
 	
 	@GetMapping("/report")
@@ -87,5 +121,7 @@ public class AdminController {
 	        }
 
 	        return null;
+	   
+	   
 	    }
 }
