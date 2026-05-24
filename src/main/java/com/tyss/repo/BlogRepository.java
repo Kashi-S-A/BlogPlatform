@@ -13,11 +13,16 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
 
 	Page<Blog> findByTitleOrTagsOrAuthorContainingAllIgnoreCase(String author, String title, String tags,
 			Pageable pageable);
-	
+
 	@Query("""
 			SELECT b.user.username , COUNT(b)
 			FROM Blog b
 			GROUP BY b.user.username
 			""")
 	List<Object[]> getMostActiveUsers();
+
+	// Jignesh
+
+	Page<Blog> findByStatusOrderByCreatedDateDesc(String status, Pageable pageable);
+
 }
