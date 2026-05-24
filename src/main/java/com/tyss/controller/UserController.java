@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Optional;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final BlogRepository blogRepository;
-	
+
 	private final UserRepository userRepository;
 
 	@GetMapping("/dashboard")
@@ -44,7 +45,7 @@ public class UserController {
 
 		Pageable pageable = PageRequest.of(pageNumber, 1);
 
-		Page<Blog> page = blogRepository.findByTitleOrTagsOrAuthorContainingAllIgnoreCase(s, s, s, pageable);
+		Page<Blog> page = blogRepository.findByTitleContainingIgnoreCaseOrTagsContainingIgnoreCaseOrAuthorContainingIgnoreCase(s, s, s, pageable);
 
 		model.addAttribute("page", page);
 
@@ -83,26 +84,67 @@ public class UserController {
 	}
 
 	@GetMapping("/blog-post")
-	public String blogPostPage(Model model,@RequestParam(required=false) String msg) {
-		
+	public String blogPostPage(Model model, @RequestParam(required = false) String msg) {
+
 		model.addAttribute("blogpost", new BlogPostDTO());
 		model.addAttribute("msg", msg);
-		
+
+		return "blog-posts";
+	}
+
+	@PostMapping("/blog-post")
+	public String blogPost(Model model, BlogPostDTO blogpostDto, Principal principal) {
+		Optional<User> opt = userRepository.findByEmail(principal.getName());
+
+		User user = opt.get();
+
+		Blog blog = new Blog();
+
+		BeanUtils.copyProperties(blogpostDto, blog);
+
+		blog.setUser(user);
+		blog.setAuthor(user.getFullName());
+
+		blogRepository.save(blog);
+
+		model.addAttribute("blogAdded", "blog added Successfully");
+
 		return "blog-posts";
 	}
 	
-	@PostMapping("/blog-post")
-	public String blogPost(Model model, BlogPostDTO blogpostDto, Principal principal) {
-		Optional<User>opt=userRepository.findByEmail(principal.getName());
-		User user=opt.get();
-		Blog blog=new Blog();
-		blog.setUser(user);
-		blog.setTitle(blogpostDto.getTitle());
-		blog.setContent(blogpostDto.getContent());
-		blog.setTags(blogpostDto.getTags());
-		blog.setAuthor(user.getFullName());
-		blogRepository.save(blog);
-		model.addAttribute("blogAdded", "blog added Successfully");
-		return "blog-posts";
+	@GetMapping("/blog/edit")
+	public String blogEditPage(Model model,@RequestParam Integer bid) {
+		
+		Blog blog = blogRepository.findById(bid).get();
+		
+		model.addAttribute("blog", blog);
+		
+		return "blog-edit";
 	}
+	
+	@PostMapping("/blog/edit")
+	public String blogEdit(Blog blog) {
+		
+		Blog dbblog = blogRepository.findById(blog.getId()).get();
+		
+		dbblog.setTitle(blog.getTitle());
+		dbblog.setContent(blog.getContent());
+		dbblog.setTags(blog.getTags());
+		
+		blogRepository.save(dbblog);
+		
+		return "redirect:/user/profile";
+	}
+	
+	@GetMapping("/blog/delete")
+	public String blogDelete(Model model,@RequestParam Integer bid) {
+		blogRepository.deleteById(bid);
+		return "redirect:/user/profile";
+	}
+	
+	@GetMapping("/logout")
+	public String logout() {
+		return "login";
+	}
+	
 }

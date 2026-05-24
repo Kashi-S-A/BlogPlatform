@@ -2,7 +2,6 @@ package com.tyss.controller;
 
 import java.util.Optional;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,20 +26,20 @@ public class AuthController {
 	private final UserRepository userRepository;
 
 	
-	//by hritik
-	@GetMapping("/")
-	public String redirectAfterLogin(Authentication authentication) {
-
-		boolean isAdmin = authentication.getAuthorities()
-				.stream()
-				.anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-		if (isAdmin) {
-			return "redirect:/admin/users";
-		}
-
-		return "redirect:/user/dashboard";
-	}
+//	//by hritik
+//	@GetMapping("/")
+//	public String redirectAfterLogin(Authentication authentication) {
+//
+//		boolean isAdmin = authentication.getAuthorities()
+//				.stream()
+//				.anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+//
+//		if (isAdmin) {
+//			return "redirect:/admin/users";
+//		}
+//
+//		return "redirect:/user/dashboard";
+//	}
 	
 	// login Page
 	@GetMapping("/login")

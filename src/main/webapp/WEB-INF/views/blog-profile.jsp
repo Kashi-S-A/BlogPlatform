@@ -186,8 +186,8 @@ body{
 	                <div class="post-card">
 	                    <h3>Title : <%= blog.getTitle() %></h3>
 						<h3>Date : <%= blog.getCreatedDate() %></h3>
-	                    <a href="#" class="btn">Edit</a>
-	                    <a href="#" class="btn">Delete</a>
+	                    <a href="/user/blog/edit?bid=<%= blog.getId() %>" class="btn">Edit</a>
+	                    <a href="/user/blog/delete?bid=<%= blog.getId() %>" class="btn">Delete</a>
 	                </div>
 	    <% 
 	            }
@@ -198,7 +198,7 @@ body{
 	        } 
 	    %>
     <!-- Logout -->
-    <a href="#" class="logout-btn">Logout</a>
+    <a href="logout" class="logout-btn">Logout</a>
 
 </div>
 
