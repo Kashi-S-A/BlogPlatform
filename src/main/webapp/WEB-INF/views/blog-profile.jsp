@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+	<%@ page import="com.tyss.entity.User" %>
+	<%@ page import="com.tyss.entity.Blog" %>
+	<%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -146,6 +149,11 @@ body{
 </head>
 
 <body>
+	
+	<%
+	    User currentUser = (User) request.getAttribute("profileUser");
+	    List<Blog> userBlogs = (List<Blog>) request.getAttribute("profileBlogs");
+	%>
 
 <!-- Header -->
 <div class="header">
@@ -162,27 +170,33 @@ body{
 <!-- Main Content -->
 <div class="container">
 
-    <h2>User Profile</h2>
+	<h2>User Profile</h2>
 
-    <!-- Profile Information -->
-    <div class="profile-info">
-        <p>Name: John Doe</p>
-        <p>Email: johndoe@example.com</p>
-    </div>
+	    <div class="profile-info">
+	        <p>Name: <%= (currentUser != null) ? currentUser.getFullName() : "" %></p>
+	        <p>Email: <%= (currentUser != null) ? currentUser.getEmail() : "" %></p>
+	    </div>
 
-    <!-- User Posts -->
-    <h2>Your Posts</h2>
+	    <h2>Your Posts</h2>
 
-    <div class="post-card">
-
-        <h3>Your Blog Title 1</h3>
-
-        <a href="#" class="btn">Edit</a>
-
-        <a href="#" class="btn">Delete</a>
-
-    </div>
-
+	    <% 
+	        if (userBlogs != null && !userBlogs.isEmpty()) {
+	            for (Blog blog : userBlogs) {
+	    %>
+	                <div class="post-card">
+	                    <h3>Title : <%= blog.getTitle() %></h3>
+						<h3>Date : <%= blog.getCreatedDate() %></h3>
+	                    <a href="#" class="btn">Edit</a>
+	                    <a href="#" class="btn">Delete</a>
+	                </div>
+	    <% 
+	            }
+	        } else { 
+	    %>
+	            <p style="margin-top:15px; color:#666;">You haven't written any posts yet.</p>
+	    <% 
+	        } 
+	    %>
     <!-- Logout -->
     <a href="#" class="logout-btn">Logout</a>
 
