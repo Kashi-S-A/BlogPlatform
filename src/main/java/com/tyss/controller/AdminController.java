@@ -1,5 +1,10 @@
 package com.tyss.controller;
 import java.io.ByteArrayOutputStream;
+
+import com.itextpdf.text.pdf.qrcode.Mode;
+import com.tyss.dto.BlogDTO;
+import com.tyss.entity.Blog;
+import org.springframework.http.HttpHeaders;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +39,39 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
+	private final BlogRepository blogRepository;
+
+	@GetMapping("/admindashboard")
+	public String adminDashboard(Model model) {
+		List<Blog> all = blogRepository.findAll();
+		model.addAttribute("blogs", all);
+		return "admin-dashboard";
+	}
+
+	@GetMapping("/deleteblog/{id}")
+	public String deletePost(@PathVariable Integer id) {
+		System.out.println("Id is: "+id);
+		blogRepository.deleteById(id);
+		return "redirect:/admin/admindashboard";
+	}
+
+	@GetMapping("/editblog/{id}")
+	public String editBlog(@PathVariable Integer id, Model model) {
+		Optional<Blog> byId = blogRepository.findById(id);
+		if(byId.isEmpty()) {
+			throw new RuntimeException("Blog not found !");
+		}
+		Blog blog = byId.get();
+		model.addAttribute("blog", blog);
+		return "edit-blog";
+	}
+
+	@PostMapping("/update-blog")
+	public String updateBlog(Blog blog) {
+		System.out.println(blog);
+		blogRepository.save(blog);
+		return "redirect:/admin/admindashboard?msg=Blog updated successfully...!";
+	}
 
 	private final UserRepository userRepository ;
 	
@@ -78,6 +117,11 @@ public class AdminController {
 
 		return "reports";
 	}
+	
+	// to generate pdf 
+	 @GetMapping("/download-report")
+	 public ResponseEntity<byte[]> downloadReport() {
+	        try {
 
 	// to generate pdf
 	@GetMapping("/download-report")
