@@ -1,3 +1,6 @@
+<%@page import="com.tyss.entity.Blog"%>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 	<!DOCTYPE html>
@@ -145,6 +148,11 @@
 
 	    <h2>Manage Blog Posts</h2>
 
+        <%
+            List<Blog> blogs = (List<Blog>) request.getAttribute("blogs");
+            System.out.print("Got the blogs");
+
+        %>
 	    <table>
 
 	        <tr>
@@ -155,18 +163,27 @@
 	            <th>Actions</th>
 	        </tr>
 
-	        <tr>
-	            <td>Example Blog Post</td>
-	            <td>John Doe</td>
-	            <td>2024-08-09</td>
-	            <td>Published</td>
+            <%
+            for(Blog blog: blogs) {
+            %>
+             <tr>
+            	            <td><%= blog.getTitle() %></td>
+            	            <td><%= blog.getAuthor() %></td>
+            	            <td>
+            	                <%= blog.getCreatedDate()
+                                    .format(DateTimeFormatter.ofPattern("dd MMM yyyy")) %>
+            	            </td>
+            	            <td>Published</td>
 
-	            <td>
-	                <a href="#" class="btn edit">Edit</a>
-	                <a href="#" class="btn delete">Delete</a>
-	                <a href="#" class="btn feature">Feature</a>
-	            </td>
-	        </tr>
+            	            <td>
+            	                <a href="/admin/editblog/<%= blog.getId() %>" class="btn edit">Edit</a>
+            	                <a href="/admin/deleteblog/<%= blog.getId() %>" class="btn delete">Delete</a>
+            	                <a href="#" class="btn feature">Feature</a>
+            	            </td>
+            	        </tr>
+            <%
+            }
+            %>
 
 	    </table>
 
