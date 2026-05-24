@@ -1,5 +1,6 @@
 package com.tyss.controller;
 
+import com.itextpdf.text.Font;
 import java.io.ByteArrayOutputStream;
 import java.security.Principal;
 import java.util.HashMap;
@@ -22,7 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.tyss.entity.Blog;
@@ -125,50 +130,87 @@ public class AdminController {
 	@GetMapping("/download-report")
 	public ResponseEntity<byte[]> downloadReport() {
 
-		try {
+	    try {
 
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
+	        // Fetch data from DB
+	        List<Object[]> reportData = blogRepository.getMostActiveUsers();
 
-			Document document = new Document();
+	        // Store data into Map
+	        Map<String, Integer> usersBlog = new HashMap<>();
 
-			PdfWriter.getInstance(document, out);
+	        for (Object[] obj : reportData) {
 
-			document.open();
+	            String userName = (String) obj[0];
 
-			document.add(new Paragraph("Most Active Users Report"));
-			document.add(new Paragraph(" "));
+	            // COUNT() returns Long in JPA
+	            Long count = (Long) obj[1];
 
-			PdfPTable table = new PdfPTable(2);
-			
-			Map<String, Integer> usersBlog = new HashMap<>();
-			
-			//logic store AuthorName in key and blog count as value
-			
-			table.addCell("User Name");
-			table.addCell("No Of Blogs");
-			
-			for (Map.Entry<String, Integer> entry : usersBlog.entrySet()) {
-				
-				table.addCell(entry.getKey());
-				table.addCell(""+entry.getValue());
-				
-			}
+	            usersBlog.put(userName, count.intValue());
+	        }
 
-			document.add(table);
+	        // PDF Creation
+	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-			document.close();
+	        Document document = new Document();
 
-			HttpHeaders headers = new HttpHeaders();
+	        PdfWriter.getInstance(document, out);
 
-			headers.add("Content-Disposition", "attachment; filename=report.pdf");
+	        document.open();
 
-			return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(out.toByteArray());
+	        // Title
+	        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	        Paragraph title = new Paragraph("Most Active Users Report", titleFont);
 
-		return null;
+	        title.setAlignment(Element.ALIGN_CENTER);
+
+	        document.add(title);
+
+	        document.add(new Paragraph(" "));
+
+	        // Table
+	        PdfPTable table = new PdfPTable(2);
+
+	        table.setWidthPercentage(100);
+
+	        table.setSpacingBefore(10f);
+
+	        // Header Cells
+	        PdfPCell h1 = new PdfPCell(new Phrase("User Name"));
+	        PdfPCell h2 = new PdfPCell(new Phrase("No Of Blogs"));
+
+	        table.addCell(h1);
+	        table.addCell(h2);
+
+	        // Data Rows
+	        for (Map.Entry<String, Integer> entry : usersBlog.entrySet()) {
+
+	            table.addCell(entry.getKey());
+
+	            table.addCell(String.valueOf(entry.getValue()));
+	        }
+
+	        document.add(table);
+
+	        document.close();
+
+	        // Response Header
+	        HttpHeaders headers = new HttpHeaders();
+
+	        headers.add("Content-Disposition", "attachment; filename=report.pdf");
+
+	        return ResponseEntity
+	                .ok()
+	                .headers(headers)
+	                .contentType(MediaType.APPLICATION_PDF)
+	                .body(out.toByteArray());
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+	    }
+
+	    return ResponseEntity.internalServerError().build();
 	}
 
 	// Jignesh
