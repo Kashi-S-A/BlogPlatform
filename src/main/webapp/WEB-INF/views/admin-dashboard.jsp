@@ -137,7 +137,7 @@
 
 	<!-- Navigation -->
 	<div class="navbar">
-	    <a href="#">Manage Posts</a>
+	    <a href="/admin/dashboard">Manage Posts</a>
 	    <a href="/admin/users">Manage Users</a>
 	    <a href="/admin/post-module">Post Moderation</a>
 	    <a href="/admin/report">Reports</a>
@@ -147,7 +147,7 @@
 	<div class="container">
 
 	    <h2>Manage Blog Posts</h2>
-
+		<p style="color: green">${msg}</p>
         <%
             List<Blog> blogs = (List<Blog>) request.getAttribute("blogs");
             System.out.print("Got the blogs");
@@ -173,12 +173,12 @@
             	                <%= blog.getCreatedDate()
                                     .format(DateTimeFormatter.ofPattern("dd MMM yyyy")) %>
             	            </td>
-            	            <td>Published</td>
+            	            <td><%=blog.getStatus() %></td>
 
             	            <td>
             	                <a href="/admin/editblog/<%= blog.getId() %>" class="btn edit">Edit</a>
             	                <a href="/admin/deleteblog/<%= blog.getId() %>" class="btn delete">Delete</a>
-            	                <a href="#" class="btn feature">Feature</a>
+            	                <!-- <a href="#" class="btn feature">Feature</a> -->
             	            </td>
             	        </tr>
             <%

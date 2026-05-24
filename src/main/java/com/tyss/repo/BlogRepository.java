@@ -19,9 +19,9 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
 	Page<Blog> findByStatus(String status, Pageable pageable);
 
 	@Query("""
-			SELECT b.user.username , COUNT(b)
+			SELECT b.user.fullName , COUNT(b)
 			FROM Blog b
-			GROUP BY b.user.username
+			GROUP BY b.user.fullName
 			""")
 	List<Object[]> getMostActiveUsers();
 

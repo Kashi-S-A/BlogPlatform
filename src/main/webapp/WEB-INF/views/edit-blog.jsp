@@ -159,7 +159,7 @@ body{
                 Update Blog
             </button>
 
-            <a href="/admin/admindashboard" class="btn cancel-btn">
+            <a href="/admin/dashboard" class="btn cancel-btn">
                 Cancel
             </a>
 

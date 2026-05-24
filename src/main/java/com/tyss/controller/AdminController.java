@@ -2,7 +2,9 @@ package com.tyss.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -34,12 +36,16 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
+	
 	private final BlogRepository blogRepository;
+	
+	private final UserRepository userRepository;
 
-	@GetMapping("/admindashboard")
-	public String adminDashboard(Model model) {
+	@GetMapping("/dashboard")
+	public String adminDashboard(Model model,@RequestParam(required = false) String msg) {
 		List<Blog> all = blogRepository.findAll();
 		model.addAttribute("blogs", all);
+		model.addAttribute("msg",msg);
 		return "admin-dashboard";
 	}
 
@@ -47,7 +53,7 @@ public class AdminController {
 	public String deletePost(@PathVariable Integer id) {
 		System.out.println("Id is: " + id);
 		blogRepository.deleteById(id);
-		return "redirect:/admin/admindashboard";
+		return "redirect:/admin/dashboard";
 	}
 
 	@GetMapping("/editblog/{id}")
@@ -63,20 +69,23 @@ public class AdminController {
 
 	@PostMapping("/update-blog")
 	public String updateBlog(Blog blog) {
-		System.out.println(blog);
-		blogRepository.save(blog);
-		return "redirect:/admin/admindashboard?msg=Blog updated successfully...!";
+		
+		Blog dbBlog = blogRepository.findById(blog.getId()).get();
+		dbBlog.setAuthor(blog.getAuthor());
+		dbBlog.setContent(blog.getContent());
+		dbBlog.setTags(blog.getTags());
+		dbBlog.setTitle(blog.getTitle());
+		
+		blogRepository.save(dbBlog);
+		
+		return "redirect:/admin/dashboard?msg=Blog updated successfully...!";
 	}
 
-	private final UserRepository userRepository;
-
-
-	@GetMapping("/dashboard")
-	public String dashoardPage() {
-
-		return "admin-dashboard";
-	}
-
+	/*
+	 * @GetMapping("/dashboard") public String dashoardPage() {
+	 * 
+	 * return "admin-dashboard"; }
+	 */
 	// manage users page by hritik
 	@GetMapping("/users")
 	public String manageUsers(Model model, Principal principal) {
@@ -130,18 +139,20 @@ public class AdminController {
 			document.add(new Paragraph(" "));
 
 			PdfPTable table = new PdfPTable(2);
-
+			
+			Map<String, Integer> usersBlog = new HashMap<>();
+			
+			//logic store AuthorName in key and blog count as value
+			
 			table.addCell("User Name");
 			table.addCell("No Of Blogs");
-
-			table.addCell("Amit");
-			table.addCell("6");
-
-			table.addCell("Akash");
-			table.addCell("4");
-
-			table.addCell("Pramod");
-			table.addCell("5");
+			
+			for (Map.Entry<String, Integer> entry : usersBlog.entrySet()) {
+				
+				table.addCell(entry.getKey());
+				table.addCell(""+entry.getValue());
+				
+			}
 
 			document.add(table);
 

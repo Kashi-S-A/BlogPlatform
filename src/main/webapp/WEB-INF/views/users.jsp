@@ -172,7 +172,7 @@ table td {
 
 	<!-- Navigation -->
 	<div class="navbar">
-		<a href="#">Manage Posts</a> 
+		<a href="/admin/dashboard">Manage Posts</a> 
 		<a href="/admin/users">Manage Users</a> 
 		<a href="/admin/post-module">Post Moderation</a> 
 		<a href="/admin/report">Reports</a>
@@ -207,8 +207,11 @@ table td {
 					<td><%=user.getEmail() %></td>
 					<td><%=user.getRole() %></td>
 
-					<td><a href="/admin/delete-user/<td><%=user.getId() %></td>" class="btn delete">
-							Delete </a></td>
+					<td><a href="/admin/edit-user/<%=user.getId() %>" class="btn delete">
+							Edit </a>
+						<a href="/admin/delete-user/<%=user.getId() %>" class="btn delete">
+							Delete </a>
+					</td>
 
 				</tr>
 

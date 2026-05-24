@@ -270,7 +270,7 @@
         <h2>Admin Blog Dashboard</h2>
 
         <div class="nav-menu">
-            <a href="#">Manage Posts</a>
+            <a href="/admin/dashboard">Manage Posts</a>
             <a href="/admin/users">Manage Users</a>
             <a href="/admin/post-module" class="active">Post Moderation</a>
             <a href="/admin/report">Reports</a>

@@ -164,7 +164,7 @@ table td{
 
 <!-- Navigation -->
 <div class="navbar">
-    <a href="#">Manage Posts</a>
+    <a href="/admin/dashboard">Manage Posts</a>
     <a href="/admin/users">Manage Users</a>
     <a href="/admin/post-module">Post Moderation</a>
     <a href="/admin/report">Reports</a>
