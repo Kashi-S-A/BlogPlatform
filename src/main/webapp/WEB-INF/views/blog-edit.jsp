@@ -1,3 +1,4 @@
+<%@page import="com.tyss.entity.Blog"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -91,6 +92,15 @@ textarea{
     font-size:15px;
 }
 
+input[type="number"]
+{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    font-size:15px;
+}
+
 /* Textarea */
 textarea{
     resize:vertical;
@@ -151,21 +161,27 @@ textarea{
 <!-- Main Content -->
 <div class="container">
 	<h3 class="success-msg">${blogAdded}</h3>
-    <h2>Create New Post</h2>
+    <h2>Edit Post</h2>
 
-    <form action="/user/blog-post" method="post">
+<%
+		Blog blog =(Blog) request.getAttribute("blog");
+%>
+
+    <form action="/user/blog/edit" method="post">
+		<label>Id:</label>
+        <input type="number" name="id" value="<%=blog.getId()%>" readonly>
 
         <label>Title:</label>
-        <input type="text" name="title">
+        <input type="text" name="title" value="<%=blog.getTitle()%>">
 
         <label>Content:</label>
-        <textarea name="content"></textarea>
+        <textarea name="content"><%=blog.getContent()%></textarea>
 
         <label>Tags:</label>
-        <input type="text" name="tags" placeholder="Comma separated tags">
+        <input type="text" name="tags" value="<%=blog.getTags()%>"  placeholder="Comma separated tags">
 
         <button type="submit" class="btn">
-            Publish
+            Submit
         </button>
 
     </form>

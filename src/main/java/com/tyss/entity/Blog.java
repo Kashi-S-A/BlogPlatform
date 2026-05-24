@@ -29,8 +29,10 @@ public class Blog {
 	private String content;
 
 	private String tags;
-	
+
 	private String author;
+
+	private String status = "PENDING";
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
