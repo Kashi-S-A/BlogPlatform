@@ -36,16 +36,16 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-	
+
 	private final BlogRepository blogRepository;
-	
+
 	private final UserRepository userRepository;
 
 	@GetMapping("/dashboard")
-	public String adminDashboard(Model model,@RequestParam(required = false) String msg) {
+	public String adminDashboard(Model model, @RequestParam(required = false) String msg) {
 		List<Blog> all = blogRepository.findAll();
 		model.addAttribute("blogs", all);
-		model.addAttribute("msg",msg);
+		model.addAttribute("msg", msg);
 		return "admin-dashboard";
 	}
 
@@ -69,15 +69,15 @@ public class AdminController {
 
 	@PostMapping("/update-blog")
 	public String updateBlog(Blog blog) {
-		
+
 		Blog dbBlog = blogRepository.findById(blog.getId()).get();
 		dbBlog.setAuthor(blog.getAuthor());
 		dbBlog.setContent(blog.getContent());
 		dbBlog.setTags(blog.getTags());
 		dbBlog.setTitle(blog.getTitle());
-		
+
 		blogRepository.save(dbBlog);
-		
+
 		return "redirect:/admin/dashboard?msg=Blog updated successfully...!";
 	}
 
@@ -98,6 +98,38 @@ public class AdminController {
 		model.addAttribute("users", users);
 
 		return "users";
+	}
+
+	// edit user (Jignesh)
+	@GetMapping("/edit-user/{id}")
+	public String editUser(@PathVariable("id") Integer id, Model model) {
+
+		User optionalUser = userRepository.findById(id).get();
+
+		model.addAttribute("user", optionalUser);
+
+		return "edit-user";
+	}
+
+	// Update User (Jignesh)
+	@PostMapping("/update-user")
+	public String updateUser(@RequestParam("id") Integer id, @RequestParam("username") String username,
+			@RequestParam("fullName") String fullName, @RequestParam("email") String email, Model model) {
+
+		Optional<User> optionalUser = userRepository.findById(id);
+
+		User user = optionalUser.get();
+
+		user.setUsername(username);
+		user.setFullName(fullName);
+		user.setEmail(email);
+
+		userRepository.save(user);
+
+		model.addAttribute("user", user);
+		model.addAttribute("successMsg", "User updated successfully.");
+
+		return "edit-user";
 	}
 
 	// delete user
@@ -139,19 +171,19 @@ public class AdminController {
 			document.add(new Paragraph(" "));
 
 			PdfPTable table = new PdfPTable(2);
-			
+
 			Map<String, Integer> usersBlog = new HashMap<>();
-			
-			//logic store AuthorName in key and blog count as value
-			
+
+			// logic store AuthorName in key and blog count as value
+
 			table.addCell("User Name");
 			table.addCell("No Of Blogs");
-			
+
 			for (Map.Entry<String, Integer> entry : usersBlog.entrySet()) {
-				
+
 				table.addCell(entry.getKey());
-				table.addCell(""+entry.getValue());
-				
+				table.addCell("" + entry.getValue());
+
 			}
 
 			document.add(table);

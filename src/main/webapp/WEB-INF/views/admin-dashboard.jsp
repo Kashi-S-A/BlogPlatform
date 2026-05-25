@@ -133,7 +133,7 @@
 	<body>
 	    <div class="header">
 	    Admin Blog Dashboard
-	</div>
+	    </div>
 
 	<!-- Navigation -->
 	<div class="navbar">
